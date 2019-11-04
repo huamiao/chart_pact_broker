@@ -1,0 +1,70 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "pactbroker.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "pactbroker.name" . }}
+    helm.sh/chart: {{ include "pactbroker.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "pactbroker.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "pactbroker.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PACT_BROKER_PUBLIC_HEARTBEAT
+              value: true
+            - name: PACT_BROKER_DATABASE_HOST
+              value: {{ .Values.env.postgresHost }}
+            - name: PACT_BROKER_DATABASE_PORT
+              value: {{ .Values.env.postgresPort }}
+            - name: PACT_BROKER_DATABASE_NAME
+              value: {{ .Values.env.postgresDatabase }}
+            - name: PACT_BROKER_DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresCredentials }}
+                  key: username
+            - name: PACT_BROKER_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresCredentials }}
+                  key: password
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /diagnostic/status/heartbeat
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /diagnostic/status/heartbeat
+              port: http
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
