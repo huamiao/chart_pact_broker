@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.service.name | default (include "pactbroker.fullname" .) }}
+  name: {{ include "pactbroker.fullname" . }}
   labels:
     app.kubernetes.io/name: {{ include "pactbroker.name" . }}
     helm.sh/chart: {{ include "pactbroker.chart" . }}
