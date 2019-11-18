@@ -29,7 +29,7 @@ spec:
             - name: PACT_BROKER_DATABASE_HOST
               value: {{ .Values.env.postgresHost }}
             - name: PACT_BROKER_DATABASE_PORT
-              value: {{ .Values.env.postgresPort }}
+              value: "{{ .Values.env.postgresPort }}"
             - name: PACT_BROKER_DATABASE_NAME
               value: {{ .Values.env.postgresDatabase }}
             - name: PACT_BROKER_DATABASE_USERNAME
