@@ -2,6 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+replicaCount: 1
+
 image:
   repository: pactfoundation/pact-broker
   tag: 2.40.0-1
@@ -21,7 +23,6 @@ env:
   postgresDatabase: ""
 
 postgresCredentials: ""
-
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
