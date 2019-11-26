@@ -34,6 +34,16 @@ spec:
               value: "{{ .Values.env.postgresPort }}"
             - name: PACT_BROKER_DATABASE_NAME
               value: {{ .Values.env.postgresDatabase }}
+            - name: PACT_BROKER_BASIC_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pactBrokerCredentials }}
+                  key: username
+            - name: PACT_BROKER_BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pactBrokerCredentials }}
+                  key: password
             - name: PACT_BROKER_DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
