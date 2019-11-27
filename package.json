@@ -1,5 +1,5 @@
 {
-  "name": "@rplan/pact-broker",
+  "name": "@rplan/pact-broker-helper",
   "version": "0.0.2",
   "description": "Some helper functions for pact-broker",
   "main": "scripts/index.js",
