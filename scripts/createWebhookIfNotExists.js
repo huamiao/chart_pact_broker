@@ -1,37 +1,6 @@
 const superagent = require('superagent')
 const vault = require('node-vault')
 
-const getOptions = yargs => yargs
-  .usage('Creates a pact-broker webhook if the webhook does not already exist')
-  .option('consumerName', {
-    describe:
-    'The name of the consumer. Pact changes from this build cause the webhook to be fired.',
-    demandOption: true,
-  })
-  .option('providerName', {
-    describe:
-    'The name of the provider. Pact changes from the consumer cause this build to be fired',
-    demandOption: true,
-  })
-  .option('webhookTargetHttpMethod', {
-    describe: 'The http method the webhook should use when triggered',
-    demandOption: false,
-    choices: ['GET', 'PUT', 'POST'],
-    default: 'POST',
-  })
-  .option('webhookTargetUrl', {
-    describe: 'The url the webhook should use when triggered',
-    demandOption: true,
-  })
-  .option('force', {
-    describe: 'Always create the webhook, regardless of if it exists or not',
-    demandOption: false,
-    type: 'boolean',
-    default: false,
-  })
-  .version(false)
-  .help('help')
-
 const myVault = vault({
   apiVersion: 'v1',
   endpoint: process.env.VAULT_ADDR,
@@ -153,6 +122,37 @@ const createWebhookIfRequired = async ({
     process.exit(1)
   }
 }
+
+const getOptions = yargs => yargs
+  .usage('Creates a pact-broker webhook if the webhook does not already exist')
+  .option('consumerName', {
+    describe:
+    'The name of the consumer. Pact changes from this build cause the webhook to be fired.',
+    demandOption: true,
+  })
+  .option('providerName', {
+    describe:
+    'The name of the provider. Pact changes from the consumer cause this build to be fired',
+    demandOption: true,
+  })
+  .option('webhookTargetHttpMethod', {
+    describe: 'The http method the webhook should use when triggered',
+    demandOption: false,
+    choices: ['GET', 'PUT', 'POST'],
+    default: 'POST',
+  })
+  .option('webhookTargetUrl', {
+    describe: 'The url the webhook should use when triggered',
+    demandOption: true,
+  })
+  .option('force', {
+    describe: 'Always create the webhook, regardless of if it exists or not',
+    demandOption: false,
+    type: 'boolean',
+    default: false,
+  })
+  .version(false)
+  .help('help')
 
 
 module.exports = {
