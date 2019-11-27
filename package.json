@@ -2,9 +2,9 @@
   "name": "pact_broker",
   "version": "1.0.0",
   "description": "",
-  "main": "lib",
+  "main": "scripts/index.js",
   "scripts": {
-    "lint": "eslint scripts"
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
