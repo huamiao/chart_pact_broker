@@ -28,5 +28,8 @@
     "superagent": "^5.1.1",
     "valid-url": "^1.0.9",
     "yargs": "^15.0.2"
+  },
+  "bin": {
+    "pact-broker-helper": "./scripts/index.js"
   }
 }
