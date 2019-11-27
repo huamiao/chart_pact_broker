@@ -1,7 +1,7 @@
 {
-  "name": "pact_broker",
+  "name": "@rplan/pact-broker",
   "version": "1.0.0",
-  "description": "",
+  "description": "Some helper functions for pact-broker",
   "main": "scripts/index.js",
   "scripts": {
     "lint": "eslint ./"
