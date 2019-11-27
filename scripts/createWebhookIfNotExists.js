@@ -1,17 +1,16 @@
-const yargs = require('yargs')
 const superagent = require('superagent')
 const vault = require('node-vault')
 
-const { argv } = yargs
+const getOptions = yargs => yargs
   .usage('Creates a pact-broker webhook if the webhook does not already exist')
   .option('consumerName', {
     describe:
-      'The name of the consumer. Pact changes from this build cause the webhook to be fired.',
+    'The name of the consumer. Pact changes from this build cause the webhook to be fired.',
     demandOption: true,
   })
   .option('providerName', {
     describe:
-      'The name of the provider. Pact changes from the consumer cause this build to be fired',
+    'The name of the provider. Pact changes from the consumer cause this build to be fired',
     demandOption: true,
   })
   .option('webhookTargetHttpMethod', {
@@ -32,7 +31,6 @@ const { argv } = yargs
   })
   .version(false)
   .help('help')
-
 
 const myVault = vault({
   apiVersion: 'v1',
@@ -118,41 +116,46 @@ const createWebhookIfRequired = async ({
   webhookTargetUrl,
   force,
 }) => {
-  const webhookAlreadyExists = await doesWebhookExist({
-    consumerName,
-    providerName,
-    webhookTargetUrl,
-    webhookTargetHttpMethod,
-  })
+  try {
+    const webhookAlreadyExists = await doesWebhookExist({
+      consumerName,
+      providerName,
+      webhookTargetUrl,
+      webhookTargetHttpMethod,
+    })
 
-  if (webhookAlreadyExists && !force) {
+    if (webhookAlreadyExists && !force) {
+      console.log(
+        `The webhook between consumer: ${consumerName} and provider: ${providerName} already exists. To force create this use --force.`,
+      )
+      return
+    }
+
+    if (webhookAlreadyExists && force) {
+      console.log(
+        `The webhook between consumer: ${consumerName} and provider: ${providerName} already exists. You specified force, creating webhook anyway.`,
+      )
+    }
+
     console.log(
-      `The webhook between consumer: ${consumerName} and provider: ${providerName} already exists. To force create this use --force.`,
+      `Creating webhook for consumer: ${consumerName} and provider: ${providerName}.`,
     )
-    return
+
+    await createWebhook({
+      consumerName,
+      providerName,
+      webhookTargetHttpMethod,
+      webhookTargetUrl,
+    })
+    process.exit(0)
+  } catch (err) {
+    console.log(err.stack)
+    process.exit(1)
   }
-
-  if (webhookAlreadyExists && force) {
-    console.log(
-      `The webhook between consumer: ${consumerName} and provider: ${providerName} already exists. You specified force, creating webhook anyway.`,
-    )
-  }
-
-  console.log(
-    `Creating webhook for consumer: ${consumerName} and provider: ${providerName}.`,
-  )
-
-  await createWebhook({
-    consumerName,
-    providerName,
-    webhookTargetHttpMethod,
-    webhookTargetUrl,
-  })
 }
 
-createWebhookIfRequired(argv)
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.log(error.stack)
-    process.exit(1)
-  })
+
+module.exports = {
+  getOptions,
+  createWebhookIfRequired,
+}
