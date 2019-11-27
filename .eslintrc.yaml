@@ -1,3 +1,6 @@
 root: true
 extends:
 - actano
+rules: 
+  no-console: 0
+
