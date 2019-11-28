@@ -55,7 +55,7 @@ const createWebhook = async ({
   console.log('webhook created')
 }
 
-const createWebhookIfRequired = async ({
+const handler = async ({
   consumerName,
   providerName,
   webhookTargetHttpMethod,
@@ -100,7 +100,7 @@ const createWebhookIfRequired = async ({
   }
 }
 
-const getOptions = yargs => yargs
+const builder = yargs => yargs
   .usage('Creates a pact-broker webhook if the webhook does not already exist')
   .option('consumerName', {
     describe:
@@ -133,6 +133,8 @@ const getOptions = yargs => yargs
 
 
 module.exports = {
-  getOptions,
-  createWebhookIfRequired,
+  desc: 'create a webhook if it does not exist',
+  command: 'createWebhookIfNotExists',
+  builder,
+  handler,
 }

@@ -24,6 +24,7 @@
     "eslint-plugin-react": "^7.16.0"
   },
   "dependencies": {
+    "@pact-foundation/pact-node": "^10.2.2",
     "node-vault": "^0.9.11",
     "superagent": "^5.1.1",
     "valid-url": "^1.0.9",
