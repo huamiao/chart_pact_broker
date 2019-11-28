@@ -1,29 +1,6 @@
-const superagent = require('superagent')
-const vault = require('node-vault')
+const { makeRequestToPactBroker } = require('./makeRequestToPactBroker')
+const { readSecret } = require('./vaultClient')
 
-const myVault = vault({
-  apiVersion: 'v1',
-  endpoint: process.env.VAULT_ADDR,
-  token: process.env.VAULT_TOKEN,
-})
-
-const makeRequestToPactBroker = async (method, url, body) => {
-  console.log(`making request to pact broker method: ${method} url ${url}`)
-  const PACT_BROKER_SECRET_PATH_NAME = '/secret/rplanx/gke-dev/pact-broker'
-  const { data: pactBrokerConfig } = await myVault.read(PACT_BROKER_SECRET_PATH_NAME)
-
-  const urlToQuery = url.includes(pactBrokerConfig.url) ? url : `${pactBrokerConfig.url}/${url}`
-  const request = superagent(method, urlToQuery)
-    .auth(pactBrokerConfig.username, pactBrokerConfig.password)
-    .set({
-      'Content-Type': 'application/json',
-    })
-  if (body) {
-    request.send(body)
-  }
-  const { body: responseBody } = await request
-  return responseBody
-}
 const getWebhookUrlForConsumerProducerRelationship = (consumerName, providerName) => `pacts/provider/${providerName}/consumer/${consumerName}/webhooks`
 
 const doesWebhookExist = async ({
@@ -61,7 +38,7 @@ const createWebhook = async ({
 }) => {
   const url = `pacts/provider/${providerName}/consumer/${consumerName}/webhooks`
   const PACT_BROKER_JENKINS_SECRET_PATH = 'secret/rplanx/jenkins/pact-broker'
-  const { data: { username, token } } = await myVault.read(PACT_BROKER_JENKINS_SECRET_PATH)
+  const { data: { username, token } } = await readSecret(PACT_BROKER_JENKINS_SECRET_PATH)
 
   const requestBody = {
     events: [{
