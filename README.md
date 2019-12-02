@@ -1,11 +1,6 @@
-# Custom Pact Broker CLI
-
-## Why
-
-All the pact-cli out there has no all the requirements that we need
+# Pact Broker
 
 * [Official Doc](https://github.com/pact-foundation/pact_broker)
-* [Our Custom Pact Broker CLI Doc](./scripts/pact-broker-cli.md)
 
 ## How to access the pact broker ui
 
