@@ -20,7 +20,7 @@ vault read secret/rplanx/gke-dev/pact-broker
 - Run your api tests against the pact definition (it will generate a pact file) [Example](https://github.com/actano/allex-accounts/blob/1f13f3e33697a03c464fda65c785e7e53a561f89/test/rest-endpoints/user-login/post-user-login.spec.js) 
 - Publish your pact file to the pact-broker [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L55-L72)
 - Create a webhook between consumer -> provider [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L73-L92)
-- Add Can I Deploy check in the jenkins pipeline [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L119-L136)
+- Add "Can I Deploy" check in the jenkins pipeline [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L119-L136)
 
 ### Provider
 
@@ -31,12 +31,11 @@ That's all!!! Your pact broker communication should work!
 
 ### How the build/ci pipeline flow works
 
-- Consumer change the pact definition and push 
-- Jenkins will kick off the Consumer Build 
-- Consumer Build will publish the new pact definition to Pact Broker
-- Consumer Build will check if it is possible to deploy periodically {canIDeploy} (timeout can be specified)          
-- Pact Broker will kick off a deploy in the provider
-- The Provider Build will verify pacts
-- After verified with success the canIDeploy thead in the consumer will be green
+- Consumer changes the pact definition and pushes 
+- Jenkins will kick off the consumer build 
+- Consumer build will publish the new pact definition to Pact Broker
+- Consumer build will check if it's possible to deploy periodically {canIDeploy} (timeout can be specified)          
+- Pact Broker will kick off a provider build
+- Provider build will verify pacts
+- After verified with success the {canIDeploy} thead in the consumer will be green
 - Your consumer will be deployed 
-                
