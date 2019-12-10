@@ -23,12 +23,13 @@ vault read secret/rplanx/gke-dev/pact-broker
 
 ### Provider
 
-- (5) Add verify pacts test file [Example](https://github.com/actano/rplan-authentication/blob/ef6e1028d7c7c52d1e22c3265811a766aa56baca/test/pact/verify-pact-with-consumers.js)
-- (6) Add "Verify Pacts" in the jenkins pipeline [Example](https://github.com/actano/rplan-authentication/blob/525019163d099a205027131b0df7efc652826acf/Jenkinsfile-k8s#L44-L64)
+- (5) Add verify pacts test file [Example](https://github.com/actano/rplan-authentication/blob/e64df3602f4a2cdb0ec56f8507d023129b4ac2bc/test/pact/verify-pact-with-consumers.js)
+- (6) Configure pact variables [Example](https://github.com/actano/rplan-authentication/blob/e64df3602f4a2cdb0ec56f8507d023129b4ac2bc/Jenkinsfile-k8s#L10-L12)
+- (7) Add "Verify Pacts" in the jenkins pipeline [Example](https://github.com/actano/rplan-authentication/blob/e64df3602f4a2cdb0ec56f8507d023129b4ac2bc/Jenkinsfile-k8s#L83-L103)
 
 ### Back to consumer
 
-- (7) Add "Can I Deploy" check in the jenkins pipeline [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L119-L136)
+- (8) Add "Can I Deploy" check in the jenkins pipeline [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L119-L136)
 
 That's all!!! Your pact broker communication should work! 
 
