@@ -47,4 +47,8 @@ That's all!!! Your pact broker communication should work!
         - The consumer will be deployed
     - If periodic checks finally failed (timeout is exceeded)
         - The provider and after that the consumer needs to be re-built
+
+### Heads Up:
+- When verifying a provider it is required to specify the branch of the consumers you want to verify it against. Usually, this configuration is on `.rplan-config` under the the `pact.tag` property and is hardcoded to `master`. If you created a new repo recently, and your main branch is `main`, be sure double check this configuration - either rename your branch to `master` or change the configuration to `master, main`.
+
  
