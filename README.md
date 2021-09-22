@@ -4,7 +4,7 @@
 
 ## How to access the pact broker ui
 
-* [Pact Broker UI](http://pact-broker.rplan.com/)
+* [Pact Broker UI](https://pact-broker.dev.allex.ai/)
 
 The UI is protected by basic auth, you can get the credentials using the command bellow:  
 
@@ -20,7 +20,9 @@ vault read secret/rplanx/gke-dev/pact-broker
 - (2) First thing you have to do is defining what you need from the provider (pact definition) [Example](https://github.com/actano/allex-accounts/blob/5e16b38a7cd646ee75e2ba7a5b18d5214f717051/test/pact/authentication-service-pact.js)
 - (3) Run your api tests against the pact definition (it will generate a pact file) [Example](https://github.com/actano/allex-accounts/blob/1f13f3e33697a03c464fda65c785e7e53a561f89/test/rest-endpoints/user-login/post-user-login.spec.js) 
 - (4) Publish your pact file to the pact broker [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L55-L72)
+Don't forget the API_VERSION environment variable [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L11)
 - (5) Create a webhook between consumer -> provider [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L73-L92)
+Set the WEBHOOK_TARGET_URL [Example](https://github.com/actano/allex-accounts/blob/6442b8c2fe13ffe4343345cb67a8039f27dddb5a/Jenkinsfile-k8s#L12)
 
 ### Provider
 
