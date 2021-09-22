@@ -53,5 +53,6 @@ That's all!!! Your pact broker communication should work!
 ### Heads Up:
 - When verifying a provider it is required to specify the branch of the consumers you want to verify it against. Usually, this configuration is on `.rplan-config` under the the `pact.tag` property and is hardcoded to `master`. If you created a new repo recently, and your main branch is `main`, be sure double check this configuration - either rename your branch to `master` or change the configuration to `master, main`.
 - Be aware that `can-i-deploy` timeout is limited to 9 minutes. If your provider build takes longer than that, your consumer build will fail because of a time out. In this case, wait for the provider build to finish and manually re-run the consumer build. Now `can-i-deploy` will run quickly. Since the pact won't have changed and it is verified already, it should take just a few seconds.
+- When `can-i-deploy` fails but the verification is present on the pact-broker, maybe the pact-broker db is too full and needs to be purged. (See [clean up script](https://github.com/pact-foundation/pact_broker/blob/master/script/prod/clean-up.sql). Let's hope this issue vanishes when we upgrade/adapt configurations of the pact broker anyway) 
 
  
