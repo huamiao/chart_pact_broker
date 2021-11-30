@@ -53,6 +53,21 @@ That's all!!! Your pact broker communication should work!
 ### Heads Up:
 - When verifying a provider it is required to specify the branch of the consumers you want to verify it against. Usually, this configuration is on `.rplan-config` under the the `pact.tag` property and is hardcoded to `master`. If you created a new repo recently, and your main branch is `main`, be sure double check this configuration - either rename your branch to `master` or change the configuration to `master, main`.
 - Be aware that `can-i-deploy` timeout is limited to 9 minutes. If your provider build takes longer than that, your consumer build will fail because of a time out. In this case, wait for the provider build to finish and manually re-run the consumer build. Now `can-i-deploy` will run quickly. Since the pact won't have changed and it is verified already, it should take just a few seconds.
-- When `can-i-deploy` fails but the verification is present on the pact-broker, maybe the pact-broker db is too full and needs to be purged. (See [clean up script](https://github.com/pact-foundation/pact_broker/blob/master/script/prod/clean-up.sql). Let's hope this issue vanishes when we upgrade/adapt configurations of the pact broker anyway) 
+- When `can-i-deploy` fails but the verification is present on the pact-broker, maybe the pact-broker DB is too full and needs to be purged.
+  - Our pact-broker DB is the postgres DB in the `allex-development` cluster.
+  - See the `pactbroker` container here: https://console.cloud.google.com/kubernetes/deployment/europe-west3-a/allex-development-gke/pact-broker/pact-broker-pactbroker/details?project=allex-development-20210223-1
+  - Normally all developers have access to the `allex-development` cluster:
+    - `gcloud container clusters get-credentials allex-development-gke --zone europe-west3-a --project allex-development-20210223-1`
+  - Login to vault and obtain the credentials for the postgres user:
+    - `vault read secret/allex/gke-development/pact-broker/postgres-user`
+  - Use these credentials to login to the `pactbrokerdb` on your local pgAdmin.
+  - Before running the clean up script, a port-foward is needed:
+    - `kubectl -n pact-broker get pod`
+    - `kubectl port-forward <pod-name> -n pact-broker 5432:5432`
+  - The clean up script is present on github:
+    - See [clean up script](https://github.com/pact-foundation/pact_broker/blob/master/script/prod/clean-up.sql).
+  - Run this script on the `pactbrokerdb` 
+  - After this, some services that are dependent on one another for, need to be built on Jenkins in that order of dependency.
+  - Let's hope this issue vanishes when we upgrade/adapt configurations of the pact broker anyway.
 
  
